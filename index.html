@@ -1,0 +1,220 @@
+<!-- <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Upload images to server using Node JS</title>
+    <script src="Scripts/jquery-3.1.1.min.js"></script>
+    <script src="Scripts/jquery.form.min.js"></script>
+</head>
+<body>
+    <form id="frmUploader" enctype="multipart/form-data" action="api/Upload/" method="post">
+        <input type="file" name="imgUploader" multiple />
+        <input type="submit" name="submit" id="btnSubmit" value="Upload" />
+     </form>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Upload dialogflow Json file </title>
+  <script src="Scripts/jquery-3.1.1.min.js"></script>
+  <script src="Scripts/jquery.form.min.js"></script>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+    body {
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    .wrapper {
+      /* height: 100vh; */
+      background: url("converterBackground.png");
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+    }
+
+    .container {
+      width: 57%;
+      height: 80vh;
+      padding-left: 2em;
+      padding-right: 2em;
+      margin-top: 5em;
+      border: 1px solid #7f7f7f;
+      border-radius: 23px;
+      background: url(texture-transparent.png) repeat 0 0;
+    }
+
+    .row {
+      display: flex;
+    }
+
+    .title {
+      word-wrap: break-word;
+    }
+
+    .how-to h2 {
+      font-size: 16px;
+      font-weight: bold;
+      color: #7f7f7f;
+    }
+
+    ol li {
+      font-size: 14px;
+      color: #7f7f7f;
+    }
+
+    .upload input {
+      border: 1px solid #7f7f7f;
+    }
+
+    .upload,
+    .submit {
+      display: inline-block;
+      vertical-align: top;
+    }
+
+    .uploadWrapper {
+      margin: 0 auto;
+      margin-top: 5em;
+    }
+
+    #frmUploader {
+      text-align: center;
+    }
+
+    #div {
+      width: 300px;
+      height: 100px;
+      line-height: 100px;
+      border: 5px dashed #CCC;
+      font-family: Verdana;
+      text-align: center;
+      margin-bottom: 25px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="container">
+      <div class="home">
+        <div class="row">
+          <div class="title col-md-5">
+            <h2>JSON converter</h2> <h5> Beta</h5>
+          </div>
+          <div class="col-md-7">
+            <div class="how-to">
+              <h2>How to convert</h2>
+              <ol>
+                <li>
+                  Choose dialogflow Json file from your computer
+                </li>
+                <li>
+                 Click on upload 
+                </li>
+                <li>
+                  Process of Json file conversion takes place 
+                </li>
+                <li>
+                  New generated Lex Json file will be available in lex folder 
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="uploadWrapper col-md-12">
+            <form id="frmUploader" enctype="multipart/form-data" action="/" method="post">
+              <!-- <div id="div"></div> -->
+              <!-- <div style="text-align:center; margin:10px 0px; ">OR</div> -->
+              <div class="upload form-group">
+                <strong>Intent</strong>
+                <input type="file" id="intentData" class="fileInput form-control" name="intent" placeholder="nothing" multiple />
+                <strong>Entity</strong>
+                <input type="file" id="entityData" class="fileInput form-control" name="entity" placeholder="nothing" multiple />
+                <div></div>
+                <br><br>
+                <div class="submit">
+                    <input type="submit" class="btn btn-info" name="submit" id="btnSubmit" value="Upload" />
+                  </div>
+                 
+              
+              </div>
+              
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    $('#div').on(
+      'dragover',
+      function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    )
+    $('#div').on(
+      'dragenter',
+      function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    )
+    $('#div').on(
+      'drop',
+      function(e) {
+        if (e.originalEvent.dataTransfer) {
+          if (e.originalEvent.dataTransfer.files.length) {
+            e.preventDefault();
+            e.stopPropagation();
+            /*UPLOAD FILES HERE*/
+            console.log(e.originalEvent.dataTransfer.files);
+            upload(e.originalEvent.dataTransfer.files);
+          }
+        }
+      }
+    );
+    function goBack() {
+        window.history.back();
+    }
+    function upload(files) {
+      alert('Upload ' + files[0].name + ' File(s).');
+      console.log("files : ", files);
+      document.getElementById("div").innerHTML = files.length + " files chosen";
+      document.getElementsByClassName("fileInput")[0].innerHTML = files[0].name;
+
+      var formData = new FormData();
+      var form = document.forms[0]
+      console.log("form: ", form);
+      var data = document.getElementById('fileData');
+      data.value = "";
+      data.innerHTML = files[0].name;
+      console.log("data : ", data.value);
+    }
+
+    function readUrl(input) {
+
+      if (input.files && input.files[0]) {
+        let reader = new FileReader();
+        reader.onload = (e) => {
+          let imgData = e.target.result;
+          let imgName = input.files[0].name;
+          input.setAttribute("data-title", imgName);
+          console.log(e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+      }
+
+    }
+  </script>
+</body>
+
+</html>
